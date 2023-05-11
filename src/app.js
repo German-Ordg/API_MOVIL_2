@@ -1,0 +1,31 @@
+const express = require('express');
+const favicon = require('express-favicon');
+const morgan = require('morgan');
+const path = require('path');
+require('dotenv').config();
+var cors = require('cors')
+const app = express();
+app.set('port',3001);
+app.use(morgan('dev'));
+app.use(express.urlencoded({extended: false}));
+app.use(express.json());
+app.use(cors());
+app.set('json spaces', 2);
+app.use(favicon(path.join(__dirname, 'public/img/general/logo_desofiw.png')));
+app.use('/api/img', express.static(path.join(__dirname, 'public/img')));
+app.use('/api/img/productos', express.static(path.join(__dirname, 'public/img/productos')));
+app.use('/api/detallepedido',require('./rutas/RutasDetallePedido'));
+app.use('/api/llevarpedidos',require('./rutas/RutasPedidosLlevar'));
+app.use('/api/entregapedidos',require('./rutas/RutasEntregaPedido'));
+app.use('/api/pedidos', require('./rutas/RutasPedidos'));
+app.use('/api/pedidoscancelados',require('./rutas/RutasPedidosCancelados'));
+app.use('/api/pedidoselaborados', require('./rutas/RutasPedidosElaborados'));
+app.use('/api/pedidosmesa',require('./rutas/RutasPedidosMesa'));
+app.use('/api/pedidosxventas',require('./rutas/RutasPedidosXVentas'));
+app.use('/api/autenticacion', require('./rutas/usuarios/RutasAutenticacion'));
+app.use('/api/usuarios', require('./rutas/RutasUsuarios'));
+app.use('/api/archivos', require('./rutas/RutasArchivos'));
+app.use('/api/productos', require('./rutas/RutasProductos'));
+app.listen(app.get('port'),()=>{
+    console.log('Servidor iniciado en el puerto'+ app.get('port'));
+});
